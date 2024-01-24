@@ -72,8 +72,10 @@ class TaskScreen extends Screen
             Layout::modal('taskModal', Layout::rows([
                 input::make('task.name')
                     ->tittle('name')
+                    ->value('qweqweqe')
                     ->placeholder('Enter task name')
-                    ->help('The name of the task to be created.'),
+                    ->help('The name of the task to be created.')
+
             ]))
                 ->title('Create Task')
                 ->applyButton('add Task'),
