@@ -8,6 +8,8 @@ use Orchid\Screen\Fields\Input;
 use Orchid\Support\Facades\Layout;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Orchid\Screen\TD;
+use Orchid\Screen\Actions\Button;
 
 class TaskScreen extends Screen
 {
@@ -56,6 +58,17 @@ class TaskScreen extends Screen
     public function layout(): iterable
     {
         return [
+            Layout::table('tasks', [
+                TD::make('name'),
+                TD::make('Actions')
+                    ->alignRight()
+                    ->render(function (Task $task) {
+                        return Button::make('Delete Task')
+                            ->confirm('After deleting, the task will be gone forever.')
+                            ->method('delete', ['task' => $task->id]);
+        }),     
+            ]),
+
             Layout::modal('taskModal', Layout::rows([
                 input::make('task.name')
                     ->tittle('name')
@@ -77,5 +90,10 @@ class TaskScreen extends Screen
         $task = new Task();
         $task->name = $request->input('task.name');
         $task->save();
+    }
+
+    public function delete(Task $task)
+    {
+        $task->delete();
     }
 }
